@@ -1,24 +1,47 @@
 import RegisterImg from '../assets/images/signup.svg'
+import customFetch from "../utils/customFetch.js";
+import { toast } from "react-toastify"
+import {Form, redirect,  useNavigation, Link} from "react-router-dom";
+
+
+export const action = async  ({request}) => {
+    const formData = await request.formData()
+    const data = Object.fromEntries(formData)
+
+    try {
+        await customFetch.post('/auth/register', data)
+        toast.success('Registration Successful')
+        return redirect('/login')
+    } catch (error){
+        console.log(error)
+        toast.error(error?.response?.data?.msg)
+        return error
+    }
+}
 
 const Register = () => {
+    const navigation = useNavigation()
+    console.log(navigation)
+    const isSubmitting = navigation.state === 'submitting'
+
     return (
         <>
-            <div className="font-[sans-serif] bg-white text-[#333] md:h-screen">
+            <div className="font-[sans-serif] bg-white text-[#443ebe] md:h-screen">
                 <div className="grid md:grid-cols-2 items-center gap-8 h-full">
                     <div className="max-md:order-1 p-4 bg-gray-50 h-full">
                         <img src={RegisterImg}
                              className="lg:max-w-[90%] w-full h-full object-contain block mx-auto" alt="login-image"/>
                     </div>
                     <div className="flex items-center p-6 h-full w-full">
-                        <form className="max-w-lg w-full mx-auto">
+                        <Form method='post' className="max-w-lg w-full mx-auto">
                             <div className="mb-12">
-                                <h3 className="text-[#BF9C52] md:text-3xl text-2xl font-extrabold max-md:text-center">Create
+                                <h3 className="text-[#443ebe] md:text-3xl text-2xl font-extrabold max-md:text-center">Create
                                     an account</h3>
                             </div>
                             <div>
-                                <label className="text-xs block mb-2">Full Name</label>
+                                <label className="text-xs block mb-2">First Name</label>
                                 <div className="relative flex items-center">
-                                    <input name="name" type="text" required
+                                    <input name="firstName" type="text" required
                                            className="w-full bg-transparent text-sm border-b border-gray-300 focus:border-blue-500 px-2 py-3 outline-none"
                                            placeholder="Enter name"/>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
@@ -31,11 +54,11 @@ const Register = () => {
                                 </div>
                             </div>
                             <div className="mt-10">
-                                <label className="text-xs block mb-2">Email</label>
+                                <label className="text-xs block mb-2">Last Name</label>
                                 <div className="relative flex items-center">
-                                    <input name="email" type="text" required
+                                    <input name="lastName" type="text" required
                                            className="w-full bg-transparent text-sm border-b border-gray-300 focus:border-blue-500 px-2 py-3 outline-none"
-                                           placeholder="Enter email"/>
+                                           placeholder="Enter lastname"/>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
                                          className="w-[18px] h-[18px] absolute right-2" viewBox="0 0 682.667 682.667">
                                         <defs>
@@ -60,25 +83,41 @@ const Register = () => {
                                     <input name="password" type="password" required
                                            className="w-full bg-transparent text-sm border-b border-gray-300 focus:border-blue-500 px-2 py-3 outline-none"
                                            placeholder="Enter password"/>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
-                                         className="w-[18px] h-[18px] absolute right-2 cursor-pointer"
-                                         viewBox="0 0 128 128">
-                                        <path
-                                            d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z"
-                                            data-original="#000000"></path>
-                                    </svg>
                                 </div>
                             </div>
-                            <div className="mt-12">
-                                <button type="button"
-                                        className="w-full py-2.5 px-8 text-sm font-semibold rounded bg-[#D6AE55] hover:bg-[#71530A] text-white border focus:outline-none">
-                                    Creat an account
-                                </button>
-                                <p className="text-sm mt-8">Already have an account? <a href="javascript:void(0);"
-                                                                                        className="text-blue-500 font-semibold hover:underline ml-1">Login
-                                    here</a></p>
+                            <div className="mt-10">
+                                <label className="text-xs block mb-2">Email</label>
+                                <div className="relative flex items-center">
+                                    <input name="email" type="text" required
+                                           className="w-full bg-transparent text-sm border-b border-gray-300 focus:border-blue-500 px-2 py-3 outline-none"
+                                           placeholder="Enter password"/>
+                                    
+                                </div>
                             </div>
-                        </form>
+
+                            <div className="mt-10">
+                    <label className="text-xs block mb-2">Role</label>
+                    <div className="relative flex items-center">
+                        <select name="role"
+                                className="w-full bg-transparent text-sm border-b border-gray-300 focus:border-blue-500 px-2 py-3 outline-none">
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="hod">HOD</option>
+                            <option value="dean">Dean</option>
+                            <option value="dvs">DVS</option>
+                            <option value="secretary">Secretary</option>
+                        </select>
+                    </div>
+                </div>
+                            
+                            <div className="mt-12">
+                                <button type="submit"
+                                        className="w-full py-2.5 px-8 text-sm font-semibold rounded bg-[#524ae4] hover:bg-[#443ebe] text-white border focus:outline-none" disabled={isSubmitting}>
+                                     { isSubmitting ? 'registering...': 'Register'}
+                                </button>
+                                <p className="text-sm mt-8 text-black">Already have an account? <Link to="/login"className="text-blue-500 font-semibold hover:underline ml-1">
+                                    Login here</Link></p>
+                            </div>
+                        </Form>
                     </div>
                 </div>
             </div>

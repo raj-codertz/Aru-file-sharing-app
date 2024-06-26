@@ -8,18 +8,17 @@ import { toast} from "react-toastify";
 // creating a context for the dashboard
 const DashboardContext = createContext()
 
-// export const loader = async () => {
-//     try {
-//       const { data } = await customFetch.get('users/current-user')
-//         return data
-//     } catch (error) {
-//         return redirect('/')
-//     }
-// }
+export const loader = async () => {
+    try {
+      const { data } = await customFetch.get('user/current-user')
+        return data
+    } catch (error) {
+        return redirect('/')
+    }
+}
 
 const DashboardLayout = ( isDarkThemeEnabled ) => {
-    //  const {user} = useLoaderData()
-    const user = { name: 'Rajabu shabani'}
+     const {user} = useLoaderData()
     
 
     const navigate = useNavigate()

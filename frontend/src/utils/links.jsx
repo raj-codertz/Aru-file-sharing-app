@@ -1,36 +1,39 @@
 
-import { IoBarChartSharp } from 'react-icons/io5';
-import { MdQueryStats } from 'react-icons/md';
-import { FaWpforms } from 'react-icons/fa';
 import { ImProfile } from 'react-icons/im';
-import { MdAdminPanelSettings } from 'react-icons/md';
+import { BsFiles } from "react-icons/bs";
+import { FcApproval } from "react-icons/fc";
+import { MdOutlineDriveFolderUpload, MdOutlinePendingActions } from "react-icons/md";
+
+
+
 
 const links = [
     {
         text: 'Upload file',
         path: '.',
-        icon: <FaWpforms />
+        icon: <MdOutlineDriveFolderUpload />
     },
     {
         text: 'Uploaded File',
         path: 'uploaded-files ',
-        icon: <MdQueryStats />
+        icon: <BsFiles />
     },
     {
         text: 'Actions',
         path: 'actions',
-        icon: <IoBarChartSharp />
-    },
-    {
-        text: 'Profile',
-        path: 'profile',
-        icon: <ImProfile />
-    },
-    {
-        text: 'Admin',
-        path: 'admin',
-        icon: <MdAdminPanelSettings />
+        icon: <MdOutlinePendingActions />
     }
+    // },
+    // {
+    //     text: 'Profile',
+    //     path: 'profile',
+    //     icon: <ImProfile />
+    // },
+    // {
+    //     text: 'Admin',
+    //     path: 'admin',
+    //     icon: <MdAdminPanelSettings />
+    // }
 ]
 
 export default links

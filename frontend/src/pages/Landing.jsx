@@ -11,7 +11,7 @@ const Landing = () => {
                     <p className="mt-4 text-sm">Enjoy effortless organization, quick access, and secure storage of all your important documents.</p>
                     <Link to='/register'>
                     <button type="button"
-                            className="px-6 py-2 mt-8 font-semibold rounded text-sm outline-none border-2 border-[#333] hover:bg-[#333] hover:text-white transition-all duration-300">Get started
+                            className="px-6 py-2 mt-8 font-semibold rounded text-sm outline-none border-2 border-[#333] hover:bg-[#443ebe] hover:text-white transition-all duration-300">Get started
                     </button>
                     </Link>
                 </div>

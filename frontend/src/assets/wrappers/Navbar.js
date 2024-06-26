@@ -24,6 +24,7 @@ const Wrapper = styled.nav`
   }
   .logo-text {
     display: none;
+    margin-left: 8em;
   }
   .logo {
     display: flex;

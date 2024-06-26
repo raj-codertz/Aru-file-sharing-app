@@ -1,5 +1,28 @@
 import LoginImg from '../assets/images/login.svg'
+import customFetch from "../utils/customFetch.js";
+import { toast} from "react-toastify";
+import {Link, redirect, Form, useNavigation} from "react-router-dom";
+
+
+export const action = async ({ request }) => {
+    const formData = await request.formData()
+    const data = Object.fromEntries(formData)
+
+    try {
+        await customFetch.post('auth/login', data)
+        toast.success('Login successful')
+        return redirect('/dashboard')
+    } catch (error) {
+        toast.error(error?.response?.data?.msg)
+       return error
+    }
+}
+
+
 const Login = () => {
+    const navigation = useNavigation()
+    const isLogging = navigation.state === 'submitting'
+
     return (
         <>
             <div className="font-[sans-serif] text-[#333]">
@@ -7,16 +30,16 @@ const Login = () => {
                     <div className="grid md:grid-cols-2 items-center gap-4 max-w-7xl w-[1200px]">
                         <div
                             className="border border-gray-300 rounded-md p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
-                            <form className="space-y-6">
+                            <Form method="post" className="space-y-6">
                                 <div className="mb-10">
                                     <h3 className="text-3xl font-extrabold">Sign in</h3>
                                     <p className="text-sm mt-4">Sign in to your account and explore a world of
                                         possibilities. Your journey begins here.</p>
                                 </div>
                                 <div>
-                                    <label className="text-sm mb-2 block">User name</label>
+                                    <label className="text-sm mb-2 block">Email</label>
                                     <div className="relative flex items-center">
-                                        <input name="username" type="text" required
+                                        <input name="email" type="text" required
                                                className="w-full text-sm border border-gray-300 px-4 py-3 rounded-md outline-[#333]"
                                                placeholder="Enter user name"/>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
@@ -58,20 +81,20 @@ const Login = () => {
                                     </div>
                                 </div>
                                 <div className="!mt-10">
-                                    <button type="button"
-                                            className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-[#D6AE55] hover:bg-[#71530A] focus:outline-none">
-                                        Log in
+                                    <button type="submit"
+                                            className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-[#5c56ca] hover:bg-[#443ebe] focus:outline-none" disabled={isLogging}>
+                                         {isLogging ? 'Logging....' : 'Login'}
                                     </button>
                                 </div>
-                                <p className="text-sm !mt-10 text-center">Don't have an account <a
-                                    href="javascript:void(0);"
-                                    className="text-blue-600 hover:underline ml-1 whitespace-nowrap">Register here</a>
+                                <p className="text-sm !mt-10 text-center">Don't have an account <Link
+                                    to="/register"
+                                    className="text-blue-600 hover:underline ml-1 whitespace-nowrap">Register here</Link>
                                 </p>
-                            </form>
+                            </Form>
                         </div>
                         <div className="lg:h-[400px] md:h-[300px] max-md:mt-10">
                             <img src={LoginImg} className="w-full h-full object-cover"
-                                 alt="Dining Experience"/>
+                                 alt="login"/>
                         </div>
                     </div>
                 </div>
